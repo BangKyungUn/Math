@@ -3,11 +3,12 @@
 #include "SoftRenderer.h"
 #include "GDIHelper.h"
 #include "Renderer.h"
+#include "Vector.h"
 
 bool IsInRange(int x, int y);
 void PutPixel(int x, int y);
 void drawRectangle(int x, int y);
-void drawCircle(int PosX, int PosY, int OriginX , int OriginY , float Radius);
+void drawCircle(int PosX, int PosY, Vector2D Center, float Radius);
 
 bool IsInRange(int x, int y)
 {
@@ -30,10 +31,12 @@ void UpdateFrame(void)
 	SetColor(32, 128, 255);
 	Clear();
 
+	Vector2D Center(0, 0);
+	
 	// Draw
 	SetColor(255, 0, 0);
 
-	drawCircle(100, 100, 0, 0, 50.0f);
+	drawCircle(100, 100, Center, 50.0f);
 	
 
 	// Buffer Swap 
@@ -49,12 +52,13 @@ void drawRectangle(int x, int y) {
 	}
 }
 
-void drawCircle(int PosX, int PosY, int OriginX, int OriginY, float Radius) {
-
+void drawCircle(int PosX, int PosY, Vector2D Center, float Radius) {
+		
 
 	for (int x = -Radius; x < Radius; x++) {
 		for (int y = -Radius; y < Radius; y++) {
-			if(pow(Radius,2) > (pow(x - OriginX,2) + pow(y - OriginY,2)))
+			Vector2D currentPos(x, y);
+			if(Vector2D::DistSquared(Center, currentPos) < Radius * Radius)
 			PutPixel(x,y);
 		}
 	}
