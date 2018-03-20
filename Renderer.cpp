@@ -4,11 +4,12 @@
 #include "GDIHelper.h"
 #include "Renderer.h"
 #include "Vector.h"
+#include "Matrix.h"
 
 bool IsInRange(int x, int y);
 void PutPixel(int x, int y);
 void drawRectangle(int x, int y);
-void drawCircle(int PosX, int PosY, Vector2D Center, float Radius);
+void drawCircle(int PosX, int PosY, Vector2D Center, float Radius,Matrix2 Mat);
 
 bool IsInRange(int x, int y)
 {
@@ -36,9 +37,11 @@ void UpdateFrame(void)
 	// Draw
 	SetColor(255, 0, 0);
 
-	drawCircle(100, 100, Center, 50.0f);
-	
+	// Set Matrix
+	Matrix2 Mat(1.0f, 0.0f, 0.0f, 1.0f);
+	Mat.SetScale(3.0f, 3.0f);
 
+	drawCircle(100, 100, Center, 50.0f,Mat);
 	// Buffer Swap 
 	BufferSwap();
 }
@@ -52,14 +55,19 @@ void drawRectangle(int x, int y) {
 	}
 }
 
-void drawCircle(int PosX, int PosY, Vector2D Center, float Radius) {
+void drawCircle(int PosX, int PosY, Vector2D Center, float Radius, Matrix2 Mat) {
 		
-
 	for (int x = -Radius; x < Radius; x++) {
 		for (int y = -Radius; y < Radius; y++) {
+
 			Vector2D currentPos(x, y);
-			if(Vector2D::DistSquared(Center, currentPos) < Radius * Radius)
-			PutPixel(x,y);
+
+			if (Vector2D::DistSquared(Center, currentPos) < Radius * Radius) {
+
+				currentPos = currentPos *Mat;
+				PutPixel(currentPos.x, currentPos.y);
+
+			}
 		}
 	}
 }
