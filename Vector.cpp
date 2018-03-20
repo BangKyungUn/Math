@@ -13,10 +13,11 @@ float Vector2D::DistSquared(const Vector2D &V1, const Vector2D &V2) {
 
 Vector2D Vector2D::operator*(const Matrix2 Mat) const
 {
-	Vector2D Result; // (0,1) // 2행 1렬 짜리 매트릭스가 들어와야함.
+	Vector2D Result; 
 
 	Result.x = x * Mat._11 + y * Mat._21;
-	Result.y = x * Mat._21 + y * Mat._22;
+	Result.y = x * Mat._12 + y * Mat._22;
 
 	return Result;
 }
+

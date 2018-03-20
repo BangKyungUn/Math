@@ -26,5 +26,14 @@ struct Matrix2 {
 		_22 = 1.0f;
 	};
 
-	Matrix2 operator *(const Matrix2 Other) const; // 행렬연산?
+	void SetRotate(float degree) {
+		float Radian = Deg2Rad(degree);
+
+		_11 = cosf(Radian);
+		_12 = -sinf(Radian);
+		_21 = sinf(Radian);
+		_22 = cosf(Radian);
+	}
+
+	Matrix2 operator *(const Matrix2 Other) const; // 행렬연산
 };
