@@ -19,4 +19,23 @@ public:
 
 
 	Vector2D operator *(const Matrix2 Mat) const;
+	float operator|(const Vector2D& v) const;
+	float operator^ (const Vector2D& v) const;
+	bool Equals(const Vector2D& V, float Tolerance = KINDA_SMALL_NUMBER) const;
+
 };
+
+FORCEINLINE bool Vector2D::Equals(const Vector2D&v, float Tolerance) const
+{
+	return fabs(x - v.x) <= Tolerance && fabs(y - v.y) <= Tolerance;
+}
+
+FORCEINLINE float Vector2D::operator|(const Vector2D& v) const
+{
+	return x * v.x + y + v.y;
+}
+
+FORCEINLINE float Vector2D::operator^(const Vector2D& v) const
+{
+	return  x * v.y - y * v.x;
+}
