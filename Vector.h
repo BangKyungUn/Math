@@ -18,16 +18,72 @@ public:
 	static float DistSquared(const Vector2D &V1, const Vector2D &V2);
 
 
-	Vector2D operator *(const Matrix2 Mat) const;
-	float operator|(const Vector2D& v) const;
-	float operator^ (const Vector2D& v) const;
-	bool Equals(const Vector2D& V, float Tolerance = KINDA_SMALL_NUMBER) const;
+	FORCEINLINE Vector2D operator *(const Matrix2 Mat) const;
+	FORCEINLINE float operator|(const Vector2D& v) const;
+	FORCEINLINE float operator^ (const Vector2D& v) const;
+	FORCEINLINE bool Equals(const Vector2D& V, float Tolerance = KINDA_SMALL_NUMBER) const;
+	FORCEINLINE Vector2D operator+(const Vector2D &v);
+	FORCEINLINE Vector2D operator-(const Vector2D &v);
+	FORCEINLINE Vector2D operator*(const float &Scale) const;
+	FORCEINLINE Vector2D operator/(const float &Scale) const;
 
+	FORCEINLINE Vector2D operator+=(const Vector2D &v);
+	FORCEINLINE Vector2D operator-=(const Vector2D &v);
+	FORCEINLINE Vector2D operator*=(const float &Scale);
+	FORCEINLINE Vector2D operator/=(const float &Scale);
 };
 
 FORCEINLINE bool Vector2D::Equals(const Vector2D&v, float Tolerance) const
 {
 	return fabs(x - v.x) <= Tolerance && fabs(y - v.y) <= Tolerance;
+}
+
+FORCEINLINE Vector2D Vector2D::operator+(const Vector2D & v)
+{
+	return Vector2D(x + v.x, y + v.y);
+}
+
+FORCEINLINE Vector2D Vector2D::operator-(const Vector2D & v)
+{
+	return Vector2D(x - v.x, y - v.y);
+}
+
+FORCEINLINE Vector2D Vector2D::operator*(const float & Scale) const
+{
+	return Vector2D(x * Scale,y*Scale);
+}
+
+FORCEINLINE Vector2D Vector2D::operator/(const float & Scale) const
+{
+	return Vector2D(x / Scale, y / Scale);
+}
+
+FORCEINLINE Vector2D Vector2D::operator+=(const Vector2D & v)
+{
+	x += v.x;
+	y += v.y;
+	return *this;
+}
+
+FORCEINLINE Vector2D Vector2D::operator-=(const Vector2D & v)
+{
+	x -= v.x;
+	y -= v.y;
+	return *this;
+}
+
+FORCEINLINE Vector2D Vector2D::operator*=(const float & Scale)
+{
+	x *= Scale;
+	y *= Scale;
+	return *this;
+}
+
+FORCEINLINE Vector2D Vector2D::operator/=(const float & Scale)
+{
+	x /= Scale;
+	y /= Scale;
+	return *this;
 }
 
 FORCEINLINE float Vector2D::operator|(const Vector2D& v) const
