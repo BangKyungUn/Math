@@ -5,13 +5,14 @@
 #include "Renderer.h"
 #include "Vector.h"
 #include "Matrix.h"
-
+#include <iostream>
+#include <math.h>
 bool IsInRange(int x, int y);
 void PutPixel(int x, int y);
 void drawRectangle(int x, int y);
 void drawCircle(int PosX, int PosY, Vector2D Center, float Radius,Matrix2 Mat);
 void drawline(Vector2D Origin, Vector2D Target, Matrix2 Rot);
-
+void drawlineConvex(Vector3D start, Vector3D des);
 bool IsInRange(int x, int y)
 {
 	return (abs(x) < (g_nClientWidth / 2)) && (abs(y) < (g_nClientHeight / 2));
@@ -33,10 +34,9 @@ void UpdateFrame(void)
 	SetColor(32, 128, 255);
 	Clear();
 
-	Vector2D Center(0, 0);
+	
 	
 	// Draw
-	SetColor(255, 0, 0);
 
 	// Set Matrix
 	static float angle = 0.0f;
@@ -48,14 +48,18 @@ void UpdateFrame(void)
 	RotateMat.SetRotate(angle);
 	Mat = Mat * RotateMat;
 
-	drawCircle(100, 100, Center, 50.0f,Mat);
-
-	Vector2D Origin(0.0f, 0.0f);
-	Vector2D Target(100.0f, 100.0f);
-
-	drawline(Origin, Target,RotateMat);
-
-
+//  Vector2D Center(0, 0);
+//  drawCircle(100, 100, Center, 50.0f,Mat);
+//  
+//  Vector2D Origin(0.0f, 0.0f);
+//  Vector2D Target(100.0f, 100.0f);
+//  
+//  drawline(Origin, Target,RotateMat);
+	Vector3D pt1, pt2;
+	pt1.SetPoint(10, 10);
+	pt2.SetPoint(80, 20);
+	SetColor(255, 0, 0);
+	drawlineConvex(pt1, pt2);
 	// Buffer Swap 
 	BufferSwap();
 }
@@ -95,4 +99,21 @@ void drawline(Vector2D Origin, Vector2D Target, Matrix2 Rot) {
 		PutPixel(pos.x, pos.y);
 	}
 	
+}
+
+void drawlineConvex(Vector3D start, Vector3D des)
+{
+	// L[t] = (1-t)p + tQ // 0 <= t <= 1;
+
+	float distance = sqrt(pow(des.X - start.X,2) + pow(des.Y - start.Y,2));
+	float inc = 1.0f / distance;
+
+	for (float i = 0.01; i < distance;i++) {
+		float t = inc * i;
+		Vector3D pt = start * (1.0f - t) + des * t;
+		PutPixel(pt.X, pt.Y);
+	}
+	
+
+
 }

@@ -4,6 +4,9 @@
 #include "Matrix.h"
 
 
+
+
+
 struct Vector2D {
 
 public :
@@ -18,7 +21,7 @@ public:
 	static float DistSquared(const Vector2D &V1, const Vector2D &V2);
 
 
-	FORCEINLINE Vector2D operator *(const Matrix2 Mat) const;
+	Vector2D operator *(const Matrix2 Mat) const;
 	FORCEINLINE float operator|(const Vector2D& v) const;
 	FORCEINLINE float operator^ (const Vector2D& v) const;
 	FORCEINLINE bool Equals(const Vector2D& V, float Tolerance = KINDA_SMALL_NUMBER) const;
@@ -95,3 +98,49 @@ FORCEINLINE float Vector2D::operator^(const Vector2D& v) const
 {
 	return  x * v.y - y * v.x;
 }
+
+
+
+
+struct Vector3D {
+
+public:
+	float X;
+	float Y;
+	float Z;
+
+	Vector3D() {}
+	Vector3D(float inX, float inY , float inZ) : X(inX), Y(inY),Z(inZ) {}
+
+	void SetPoint(float InX, float InY)
+	{
+		X = InX;
+		Y = InY;
+		Z = 1.0f;
+	}
+
+	void SetVector(float InX, float InY)
+	{
+		X = InX;
+		Y = InY;
+		Z = 0.0f;
+	}
+
+	FORCEINLINE Vector3D operator+ (const Vector3D& v);
+//	FORCEINLINE Vector3D operator- (const Vector3D& v);
+	FORCEINLINE Vector3D operator* (const float& Scale) const;
+
+};
+
+FORCEINLINE Vector3D Vector3D::operator+ (const Vector3D& v)
+{
+	return Vector3D(X + v.X, Y + v.Y, Z);
+}
+
+
+
+FORCEINLINE Vector3D Vector3D::operator* (const float& Scale) const
+{
+	return Vector3D(X*Scale, Y*Scale, Z);
+}
+
