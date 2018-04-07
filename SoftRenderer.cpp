@@ -118,6 +118,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+float moveX;
+float moveY;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -152,6 +154,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             EndPaint(hWnd, &ps);
         }
         break;
+	case WM_KEYDOWN:
+		switch (wParam) {
+		case VK_LEFT:
+			if (moveX > -200.0f)
+				moveX -= 5.0f;
+			break;
+		case VK_RIGHT:
+			if (moveX < 200.0f)
+				moveX += 5.0f;
+			break;
+		case VK_UP:
+			if (moveY < 200.0f)
+				moveY += 5.0f;
+			break;
+		case VK_DOWN:
+			if (moveY > -200.0f)
+				moveY -= 5.0;
+			break;
+		}
+		break;
     case WM_DESTROY:
 		ReleaseGDI(hWnd);
         PostQuitMessage(0);

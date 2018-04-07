@@ -129,6 +129,7 @@ public:
 	FORCEINLINE Vector3D operator+ (const Vector3D& v);
 //	FORCEINLINE Vector3D operator- (const Vector3D& v);
 	FORCEINLINE Vector3D operator* (const float& Scale) const;
+	Vector3D operator *(const Matrix3 Mat) const;
 
 };
 
@@ -142,5 +143,16 @@ FORCEINLINE Vector3D Vector3D::operator+ (const Vector3D& v)
 FORCEINLINE Vector3D Vector3D::operator* (const float& Scale) const
 {
 	return Vector3D(X*Scale, Y*Scale, Z);
+}
+
+FORCEINLINE Vector3D Vector3D::operator*(const Matrix3 Mat) const
+{
+	Vector3D Result;
+
+	Result.X = Mat._11 * X + Mat._12 * Y + Mat._13 * Z;
+	Result.Y = Mat._21 * X + Mat._22 * Y + Mat._23 * Z;
+	Result.Z = Mat._31 * X + Mat._32 * Y + Mat._33 * Z;
+
+	return Result;
 }
 
