@@ -120,6 +120,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 float moveX;
 float moveY;
+float Scale = 1.0f;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -155,24 +156,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
 	case WM_KEYDOWN:
-		switch (wParam) {
-		case VK_LEFT:
-			if (moveX > -200.0f)
-				moveX -= 5.0f;
-			break;
-		case VK_RIGHT:
-			if (moveX < 200.0f)
-				moveX += 5.0f;
-			break;
-		case VK_UP:
+		if (wParam == 'W') {
 			if (moveY < 200.0f)
-				moveY += 5.0f;
-			break;
-		case VK_DOWN:
-			if (moveY > -200.0f)
-				moveY -= 5.0;
-			break;
+					moveY += 5.0f;
 		}
+		if (wParam == 'A')
+			if (moveX > -200.0f) {
+				moveX -= 5.0f;
+			}
+		if(wParam == 'S')
+			if (moveY > -200.0f) {
+				moveY -= 5.0f;
+			}
+		if(wParam == 'D')
+			if (moveX < 200.0f) {
+				moveX += 5.0f;
+			}
+		if (wParam == 'Q')
+			if (Scale < 4.0f) {
+				Scale++;
+			}
+		if(wParam == 'E')
+			if (Scale > -4.0f) {
+				Scale--;
+			}
 		break;
     case WM_DESTROY:
 		ReleaseGDI(hWnd);

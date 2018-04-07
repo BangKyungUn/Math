@@ -20,6 +20,7 @@ void drawlineConvex(Vector3D start, Vector3D des,Matrix3 mat);
 
 extern float moveX;
 extern float moveY;
+extern float Scale;
 bool IsInRange(int x, int y)
 {
 	return (abs(x) < (g_nClientWidth / 2)) && (abs(y) < (g_nClientHeight / 2));
@@ -47,16 +48,17 @@ void UpdateFrame()
 	Matrix3 Mat;
 	Matrix3 R;
 	Matrix3 T;
+	Matrix3 S;
 	R.SetRotation(angle);
-	
+	T.SetTranslation(moveX, moveY);
+	S.SetScale(Scale, Scale, Scale);
 
 	Vector3D pt1, pt2;
 	pt1.SetPoint(10, 10);
 	pt2.SetPoint(80, 20);
 	SetColor(255, 0, 0);
 
-	T.SetTranslation(moveX,moveY);
-	Mat = Mat * T * R;
+	Mat = Mat * T * R * S;
 	drawlineConvex(pt1, pt2,Mat);
 	// Buffer Swap 
 	BufferSwap();
