@@ -28,6 +28,12 @@
     <Filter Include="Image">
       <UniqueIdentifier>{131d3109-725d-4580-9039-1dc9983522cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{a89fa446-ea31-4967-be3b-c9d0d6a9f247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{b235a8ae-afe7-45bc-bed4-f32868f2dbaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -63,8 +69,20 @@
     <ClInclude Include="Texture.h">
       <Filter>Image</Filter>
     </ClInclude>
+    <ClInclude Include="CommonShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureShader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -95,8 +113,17 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Image</Filter>
     </ClCompile>
+    <ClCompile Include="TextureShader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="CommonShader.cpp">
+      <Filter>Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

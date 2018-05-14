@@ -36,3 +36,14 @@ ULONG Texture::GetTexturePixel(float s, float t, const Triangle & tri)
 	int PixelY = RoundToInt(UVResult.Y * (height - 1));
 	return GetPixel(PixelX, PixelY);
 }
+
+ULONG Texture::TextureSample(Vector2 TexCoord)
+{
+	int PixelX = (int)floorf(TexCoord.X * width);
+	int PixelY = (int)floorf(TexCoord.Y * height);
+
+	PixelX = PixelX % width;
+	PixelY = PixelY % height;
+
+	return GetPixel(PixelX, PixelY);
+}

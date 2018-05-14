@@ -41,6 +41,11 @@ public:
 		dotUV = u.Dot(v);
 		dotVV = v.Dot(v);
 		invDenom = 1.0f / (dotUU * dotVV - dotUV * dotUV);
+
+		Min.X = RoundToInt(sbbMin.X);
+		Min.Y = RoundToInt(sbbMin.Y);
+		Max.X = RoundToInt(sbbMax.X);
+		Max.Y = RoundToInt(sbbMax.Y);
 	}
 
 	Vertex vt[3];
@@ -49,6 +54,8 @@ public:
 	Vector2 v;
 	Vector2 sbbMin;
 	Vector2 sbbMax;
+	IntPoint Min;
+	IntPoint Max;
 	float dotUU, dotUV, dotVV;
 	float invDenom;
 
@@ -69,7 +76,23 @@ public:
 		return true;
 	}
 
-	ULONG GetPixelColor(Vector3 target, float s, float t)
+	Vector3 GetFragmentPos(Vector3 target, float s, float t)
+	{
+		Vector3 Pos0 = vt[0].position;
+		Vector3 Pos0ToPos1 = vt[1].position - vt[0].position;
+		Vector3 Pos0ToPos2 = vt[2].position - vt[0].position;
+		return Pos0 + Pos0ToPos1 * s + Pos0ToPos2 * t;
+	}
+
+	Vector2 GetFragmentUV(Vector3 target, float s, float t)
+	{
+		Vector2 UV0 = vt[0].uv;
+		Vector2 UV0ToUV1 = vt[1].uv - vt[0].uv;
+		Vector2 UV0ToUV2 = vt[2].uv - vt[0].uv;
+		return UV0 + UV0ToUV1 * s + UV0ToUV2 * t;
+	}
+
+	ULONG GetFragmentColor(Vector3 target, float s, float t)
 	{
 		BYTE RV0 = GetRValue(vt[0].color);
 		BYTE RV1 = GetRValue(vt[1].color);
