@@ -13,6 +13,7 @@
 #include "Sprite.h"
 #include "Input.h"
 #include <map>
+#include "Transform.h"
 
 bool IsInRange(int x, int y);
 void PutPixel(int x, int y);
@@ -172,14 +173,24 @@ void UpdateFrame(void)
 	float angle = 0.0f;
 	float scale = 1.0f;
 
+	//if (GetAsyncKeyState(VK_LSHIFT)) cInput->calcCamera
+	//else {
+	//	offsetX = cInput->CalcOffset();
+	//	angle = cInput->CalcAngle();
+	//	scale = cInput->CalcScale();
+	//}
+
 	// 입력 처리
 	offsetX = cInput->CalcOffset();
 	angle = cInput->CalcAngle();
 	scale = cInput->CalcScale();
 
-	Matrix3 TMat, RMat, SMat, TRSMat;
+	Matrix3 TMat, RMat, SMat, TRSMat, TRS;
 	ConstantBuffer cBuffer01;
-	
+	Transform2D MeshTransform(Vector2(offsetX, 0.0f), angle, Vector2(scale, scale));
+	TRS = MeshTransform.GetTRSMatrix();
+
+
 	// SpriteMap의 처음부터 끝까지 돌면서 렌더링
 	for (std::map<int, Sprite>::iterator i = spriteMap.begin(); i != spriteMap.end(); i++) {
 		// 스프라이트의 기본 속성에 offset,angle,scale을 더하여  TRSMat을 만듬.

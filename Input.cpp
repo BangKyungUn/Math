@@ -36,3 +36,10 @@ float Input::CalcScale()
 	if (GetAsyncKeyState(VK_NEXT)) scale *= 0.99f;
 	return scale;
 }
+
+float Input::CalcCamera()
+{
+	static Vector2 cameraLocaton(0.0f, 0.0f);
+	static float cameraRotation(0.0f);
+	return 0.0f;
+}
