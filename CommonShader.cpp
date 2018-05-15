@@ -38,11 +38,10 @@ void CommonShader::RenderShader(Mesh * MeshToDraw)
 		vert[i].color = pData[i].pi_Color;
 	}
 
-	// ÀÎµ¦½º / 3 = »ï°¢Çü °¹¼ö
 	// »ï°¢Çü °¹¼ö ¸¸Å­ ·çÇÁ¸¦ µ¹¸é¼­ ÇÈ¼¿ Ã³¸®
-	for (int i = 0; i < MeshToDraw->GetIndexSize() / 3; i++) {
+	for (int i = 0; i < MeshToDraw->GetIndexSize(); i += 3) {
 		// 0 1 2 , 3 4 5
-		Triangle tri(vert[indices[i*3]], vert[indices[i*3+1]], vert[indices[i*3+2]]);
+		Triangle tri(vert[indices[i]], vert[indices[i+1]], vert[indices[i+2]]);
 		for (int y = tri.Min.Y; y <= tri.Max.Y; y++)
 		{
 			for (int x = tri.Min.X; x <= tri.Max.X; x++)
