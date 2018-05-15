@@ -8,7 +8,7 @@
 #include "Material.h" 
 
 class Material;
-struct MatrixBuffer;
+struct ConstantBuffer;
 
 struct Mesh {
 private:
@@ -41,7 +41,7 @@ public:
 	};
 
 	void Initialize(Vertex* vert, size_t vertSize,ULONG* indi,size_t indiSize,Material *Mat);
-	void Render(MatrixBuffer _MatrixBuffer);
+	void Render(ConstantBuffer _ConstantBuffer);
 
 
 	Vertex* GetVertices() { return vertices; }

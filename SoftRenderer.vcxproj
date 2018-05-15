@@ -145,6 +145,7 @@
     <ClInclude Include="Bmp.h" />
     <ClInclude Include="CommonShader.h" />
     <ClInclude Include="GDIHelper.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Mesh.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="Bmp.cpp" />
     <ClCompile Include="CommonShader.cpp" />
     <ClCompile Include="GDIHelper.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Mesh.cpp" />

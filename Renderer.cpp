@@ -11,7 +11,9 @@
 #include "Material.h"
 #include "TextureShader.h"
 #include "Sprite.h"
-#include <vector>
+#include "Input.h"
+#include <map>
+
 bool IsInRange(int x, int y);
 void PutPixel(int x, int y);
 
@@ -74,27 +76,15 @@ void Draw2DTriangle(Triangle t)
 
 
 
-
+// Global
 Mesh *Mesh01, *Mesh02, *Mesh03;
 Sprite Sprite01, Sprite02, Sprite03;
-std::vector<Sprite*> spriteArray;
-
-// 순차적으로 레이어 검사 후 재정렬
-void sort(std::vector<Sprite*>&outArray) {
-	std::vector<Sprite*>temp;
-	for (int i = 0; i < 5; i++) {
-		for (auto a : outArray) {
-			if (a->Layer == i) {
-				temp.push_back(a);
-			}
-		}
-	}
-	outArray = temp;
-}
+std::map<int, Sprite> spriteMap;
+Input* cInput;
 
 void InitFrame(void)
 {
-
+	cInput = new Input;
 	// Texture Data
 	g_Texture->LoadBMP("test.bmp");
 
@@ -104,6 +94,7 @@ void InitFrame(void)
 	Mat->Initialize(texShader, g_Texture);
 
 	// Mesh Data
+	// 버텍스 셋업
 	Vector3 Pt1, Pt2, Pt3, Pt4;
 
 	Pt1.SetPoint(-50, 50.0f);
@@ -144,6 +135,7 @@ void InitFrame(void)
 	Mesh02 = new Mesh;
 	Mesh03 = new Mesh;
 
+	// 메쉬 셋업
 	Mesh01->Initialize(vert, 4, indices, 6,Mat);
 	Mesh02->Initialize(vert, 4, indices, 6,Mat);
 	Mesh03->Initialize(vert, 4, indices, 6, Mat);
@@ -151,18 +143,20 @@ void InitFrame(void)
 	// 레이어가 낮은거부터 그려짐.
 	// 왼쪽 스프라이트
 	Sprite01.initialize(Mesh01, Vector3(-50.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.25f, 0);
-	spriteArray.push_back(&Sprite01);
-
 	// 가운데 스프라이트
-	Sprite02.initialize(Mesh02, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 45.0f), 0.25f, 1);
-	spriteArray.push_back(&Sprite02);
-
+	Sprite02.initialize(Mesh02, Vector3(0.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 45.0f), 0.25f, 2);
 	// 오른쪽 스프라이트
-	Sprite03.initialize(Mesh03, Vector3(50.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.25f, 2);
-	spriteArray.push_back(&Sprite03);
+	Sprite03.initialize(Mesh03, Vector3(50.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 0.0f), 0.25f, 1);
 
-	// 정렬
-	sort(spriteArray);
+	// 정렬 및 검색을 용이하게 하기 위해 맵 사용
+	// 입력 객체 생성
+	std::pair<int, Sprite>p1(Sprite01.Layer, Sprite01);
+	std::pair<int, Sprite>p2(Sprite02.Layer, Sprite02);
+	std::pair<int, Sprite>p3(Sprite03.Layer, Sprite03);
+	// 삽입
+	spriteMap.insert(p1);
+	spriteMap.insert(p2);
+	spriteMap.insert(p3);
 
 	return;
 }
@@ -173,32 +167,29 @@ void UpdateFrame(void)
 	SetColor(32, 128, 255);
 	Clear();
 
-	static float offsetX = 0.0f;
-	static float angle = 0.0f;
-	static float scale = 1.0f;
+	// var initialize
+	float offsetX = 0.0f;
+	float angle = 0.0f;
+	float scale = 1.0f;
 
-	if (GetAsyncKeyState(VK_LEFT)) offsetX -= 1.0f;
-	if (GetAsyncKeyState(VK_RIGHT)) offsetX += 1.0f;
-	if (GetAsyncKeyState(VK_UP)) angle += 1.0f;
-	if (GetAsyncKeyState(VK_DOWN)) angle -= 1.0f;
-	if (GetAsyncKeyState(VK_PRIOR)) scale *= 1.01f;
-	if (GetAsyncKeyState(VK_NEXT)) scale *= 0.99f;
+	// 입력 처리
+	offsetX = cInput->CalcOffset();
+	angle = cInput->CalcAngle();
+	scale = cInput->CalcScale();
 
 	Matrix3 TMat, RMat, SMat, TRSMat;
-	MatrixBuffer mBuffer01;
-
-
-	for (auto a : spriteArray) {
-
+	ConstantBuffer cBuffer01;
+	
+	// SpriteMap의 처음부터 끝까지 돌면서 렌더링
+	for (std::map<int, Sprite>::iterator i = spriteMap.begin(); i != spriteMap.end(); i++) {
 		// 스프라이트의 기본 속성에 offset,angle,scale을 더하여  TRSMat을 만듬.
-		TMat.SetTranslation(a->pos.X + offsetX, a->pos.Y);
-		RMat.SetRotation(a->rot.Z + angle);
-		SMat.SetScale(a->Scale + scale);
+		TMat.SetTranslation(i->second.pos.X + offsetX, i->second.pos.Y);
+		RMat.SetRotation(i->second.rot.Z + angle);
+		SMat.SetScale(i->second.Scale + scale);
 		TRSMat = TMat * RMat * SMat;
 		// 매트릭스 버퍼의 월드 행렬에 TRSMat을 저장
-		mBuffer01.world = TRSMat;
-		// 변경된 매트릭스 버퍼를 셰이더에 넘겨서 렌더링.
-		a->m_Mesh->Render(mBuffer01);
+		cBuffer01.world = TRSMat;
+		i->second.m_Mesh->Render(cBuffer01);
 	}
 
 	// Buffer Swap 

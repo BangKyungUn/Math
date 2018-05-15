@@ -15,7 +15,7 @@ PixelShaderInput TextureShader::vertexShader(VertexShaderInput input)
 {
 	PixelShaderInput output;
 	// 입력 데이터의 포지션의 월드 행렬을 곱한 것을 출력 데이터에 저장
-	output.pi_Position = input.vi_Position * m_MatrixBuffer.world;
+	output.pi_Position = input.vi_Position * m_ConstantBuffer.world;
 	output.pi_Texcoord = input.vi_Texcoord;
 	output.pi_Color = input.vi_Color;
 	return output;

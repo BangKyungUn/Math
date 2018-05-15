@@ -16,6 +16,6 @@ public:
 		mTexture = tex;
 		return;
 	}
-	void Render(Mesh*MeshToDraw, MatrixBuffer MatrixBufferToDraw);
+	void Render(Mesh*MeshToDraw, ConstantBuffer cBufferToDraw);
 };
 

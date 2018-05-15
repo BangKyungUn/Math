@@ -2,17 +2,17 @@
 #include "CommonShader.h"
 #include "Mesh.h"
 
-void CommonShader::Render(Mesh * MeshToDraw, MatrixBuffer MatrixBufferToDraw, Texture * TextureToDraw)
+void CommonShader::Render(Mesh * MeshToDraw, ConstantBuffer MatrixBufferToDraw, Texture * TextureToDraw)
 {
 	SetShaderParameters(MatrixBufferToDraw, TextureToDraw);
 	RenderShader(MeshToDraw);
 	return;
 }
 
-void CommonShader::SetShaderParameters(MatrixBuffer MatrixBufferToDraw, Texture * TextureToDraw)
+void CommonShader::SetShaderParameters(ConstantBuffer MatrixBufferToDraw, Texture * TextureToDraw)
 {
 	m_ShaderTexture = TextureToDraw;
-	m_MatrixBuffer = MatrixBufferToDraw;
+	m_ConstantBuffer = MatrixBufferToDraw;
 	return;
 }
 
@@ -30,6 +30,7 @@ void CommonShader::RenderShader(Mesh * MeshToDraw)
 		vData.vi_Position = vertices[i].position;
 		vData.vi_Texcoord = vertices[i].uv;
 		vData.vi_Color = vertices[i].color;
+		// πˆ≈ÿΩ∫ ºŒ¿Ã¥ı √≥∏Æ
 		pData[i] = vertexShader(vData);
 
 		vert[i].position = pData[i].pi_Position;
@@ -56,6 +57,7 @@ void CommonShader::RenderShader(Mesh * MeshToDraw)
 					pData.pi_Position = tri.GetFragmentPos(target, outS, outT);
 					pData.pi_Color = tri.GetFragmentColor(target, outS, outT);
 					pData.pi_Texcoord = tri.GetFragmentUV(target, outS, outT);
+					// «»ºø ºŒ¿Ã¥ı √≥∏Æ
 					ULONG finalColor = pixelShader(pData);
 					g_CurrentColor = finalColor;
 					PutPixel(IntPoint(x, y));

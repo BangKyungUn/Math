@@ -11,10 +11,10 @@ Material::~Material()
 {
 }
 
-void Material::Render(Mesh * MeshToDraw, MatrixBuffer MatrixBufferToDraw)
+void Material::Render(Mesh * MeshToDraw, ConstantBuffer cBufferToDraw)
 {
 	if (cShader) {
-		cShader->Render(MeshToDraw, MatrixBufferToDraw,mTexture);
+		cShader->Render(MeshToDraw, cBufferToDraw,mTexture);
 	}
 	return;
 }
