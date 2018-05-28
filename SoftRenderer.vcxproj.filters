@@ -91,7 +91,7 @@
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Renderer</Filter>
+      <Filter>Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
